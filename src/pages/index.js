@@ -17,7 +17,7 @@ export default function Home() {
                             <br />
                             pro vás nebo vaší firmu
                         </h2>
-                        <a href="/contact">Kontaktujte mě</a>
+                        <Link href="/contact">Kontaktujte mě</Link>
                     </div>
                     <Image src="/website-cut.png" width={100} height={100} />
                 </div>
