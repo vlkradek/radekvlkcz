@@ -12,12 +12,49 @@ import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
+let client
+let db
+let movies
+
+async function init(){
+    if(db) return
+    try{
+        client = await clientPromise
+        db = await client.db()
+        movies = await db.collection('contents')
+    } catch (error){
+        throw new Error('Failed')
+    }
+}
+
+;(async()=>{
+    await init()
+})()
+
+async function getMovies(){
+    try{
+        if(!movies) await init()
+        const result = await movies
+            .find({})
+            .limit(20)
+            .map(user => ({...user,_id:user._id.toString}))
+            .toArray()
+        return{movies:result}
 
 
-export default function Home() {
-    useEffect(()=>{
-        console.log(clientPromise)
-    })
+    } catch (error){
+        return {error: 'fetch failed'}
+    }
+}
+async function fetchMovies(){
+    const {movies} = await getMovies()
+    if(!movies) throw new Error('Failed to fetch')
+    return movies
+}
+export default async function Home() {
+    const movies = await fetchMovies()
+
+
     // const [contentText, setText] = useState("");
     // useEffect(() => {
     //     Content.find((err, texts) => {
@@ -31,9 +68,9 @@ export default function Home() {
                 <div className="row header-content">
                     <div className="header-intro">
                         <h2>
-                            Webové stránky a eshopy
-                            <br />
-                            pro vás nebo vaší firmu
+                            {movies.map(movie => (
+                                <p key={movie._id}>{movie.text}</p>
+                            ))}
                         </h2>
                         <Link href="/contact">Kontaktujte mě</Link>
                     </div>
