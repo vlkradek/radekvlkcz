@@ -3,19 +3,19 @@ import { useState } from "react";
 import axios from "axios";
 
 const Contact = () => {
-    const [email, setEmail] = useState("");
-    const sendMail = async (e) => {
-        e.preventDefault();
-        console.log("call");
-        console.log(email);
-        axios
-            .post("http://localhost:3000/api/email", { email })
-            .then((res) => {
-                alert("sendmail");
-                setEmail("");
-            })
-            .catch((e) => console.log(e));
-    };
+    // const [email, setEmail] = useState("");
+    // const sendMail = async (e) => {
+    //     e.preventDefault();
+    //     console.log("call");
+    //     console.log(email);
+    //     axios
+    //         .post("http://localhost:3000/api/email", { email })
+    //         .then((res) => {
+    //             alert("sendmail");
+    //             setEmail("");
+    //         })
+    //         .catch((e) => console.log(e));
+    // };
     return (
         <div className="contact">
             <h3>

@@ -1,12 +1,30 @@
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
+import { useEffect, useState } from "react";
+import Content from "./api/db";
+import mongoose from "mongoose";
+import clientPromise from "@/mongodb";
+
+
 
 import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
+
+
 export default function Home() {
+    useEffect(()=>{
+        console.log(clientPromise)
+    })
+    // const [contentText, setText] = useState("");
+    // useEffect(() => {
+    //     Content.find((err, texts) => {
+    //         console.log("ahoj");
+    //     });
+    // });
+    
     return (
         <>
             <header>
@@ -39,7 +57,7 @@ export default function Home() {
                         </div>
                         <div className="item">
                             <i class="bx bx-money"></i>
-                            <h4>Hladký průběh</h4>
+                            <h4>contentText</h4>
                             <p>
                                 Doba vývoje závisí především na komunikaci. Při
                                 dobré domluvě a aktivní komunikaci bude váš web
