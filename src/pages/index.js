@@ -2,65 +2,16 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
-import Content from "./api/db";
-import mongoose from "mongoose";
-import clientPromise from "@/mongodb";
-
-
 
 import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
-let client
-let db
-let movies
+import Test from '@/utils/model';
+import mongoose from 'mongoose';
 
-async function init(){
-    if(db) return
-    try{
-        client = await clientPromise
-        db = await client.db()
-        movies = await db.collection('contents')
-    } catch (error){
-        throw new Error('Failed')
-    }
-}
+export default function Home({tests}) {
 
-;(async()=>{
-    await init()
-})()
-
-async function getMovies(){
-    try{
-        if(!movies) await init()
-        const result = await movies
-            .find({})
-            .limit(20)
-            .map(user => ({...user,_id:user._id.toString}))
-            .toArray()
-        return{movies:result}
-
-
-    } catch (error){
-        return {error: 'fetch failed'}
-    }
-}
-async function fetchMovies(){
-    const {movies} = await getMovies()
-    if(!movies) throw new Error('Failed to fetch')
-    return movies
-}
-export default async function Home() {
-    const movies = await fetchMovies()
-
-
-    // const [contentText, setText] = useState("");
-    // useEffect(() => {
-    //     Content.find((err, texts) => {
-    //         console.log("ahoj");
-    //     });
-    // });
     
     return (
         <>
@@ -68,9 +19,9 @@ export default async function Home() {
                 <div className="row header-content">
                     <div className="header-intro">
                         <h2>
-                            {movies.map(movie => (
-                                <p key={movie._id}>{movie.text}</p>
-                            ))}
+                            Webové stránky a eshopy
+                            <br />
+                            pro vás nebo vaší firmu
                         </h2>
                         <Link href="/contact">Kontaktujte mě</Link>
                     </div>
@@ -238,6 +189,34 @@ export default async function Home() {
                     </div>
                 </section>
             </main>
+            <div>
+                {tests.map(test=>(
+                    <h1>{test.text}</h1>
+                ))}
+            </div>
         </>
     );
+}
+
+export const getServerSideProps = async()=>{
+    try{
+        console.log('fetching');
+    await mongoose.connect('mongodb+srv://radekvlk:radekvlk@cluster0.pykgiln.mongodb.net/?retryWrites=true&w=majority')
+    const tests = await Test.find().sort({_id: -1}).limit(1)
+    console.log('fetched');
+
+    
+
+    return {
+        props: {
+            tests: JSON.parse(JSON.stringify(tests))
+        }
+    }
+    } catch(error){
+        console.log(error)
+        resizeBy.json({error})
+        return{
+            notFound: true
+        }
+    }
 }
