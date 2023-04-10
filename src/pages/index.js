@@ -25,7 +25,7 @@ export default function Home({tests}) {
                         </h2>
                         <Link href="/contact">Kontaktujte mě</Link>
                     </div>
-                    <Image src="/website-cut.png" width={100} height={100} />
+                    <Image src="/website-cut.png" width={100} height={100} alt="website-example"/>
                 </div>
             </header>
             <main>
@@ -191,7 +191,7 @@ export default function Home({tests}) {
             </main>
             <div>
                 {tests.map(test=>(
-                    <h1>{test.text}</h1>
+                    <h1 key={test._id}>{test.text}</h1>
                 ))}
             </div>
         </>
